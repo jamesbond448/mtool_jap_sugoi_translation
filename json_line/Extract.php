@@ -5,6 +5,9 @@ $data = json_decode($json);
 
 $currentLine = 0;
 $indexFile = 1;
+if (!file_exists('extract')) {
+    mkdir('extract', 0777, true);
+}
 $file = fopen('extract/extracted' . sprintf('%02d', $indexFile) . '.txt', 'w');
 foreach($data as $key => $value) 
 {
