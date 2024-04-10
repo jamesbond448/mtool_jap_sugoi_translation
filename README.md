@@ -12,7 +12,7 @@ First step you will need to execute php you can use alternative if you want but 
 
 The setup is done
 
-Now to translate use mtool, go to translate tab and click on export the original text
+Now to translate use mtool, go to translate tab and click on export the original text which give you a ManualTransFile.json
 
 Then but it in your php project folder 
 <details>
@@ -39,15 +39,34 @@ which is the project and click on Extract.php
 
 ![Capture](https://github.com/jamesbond448/mtool_jap_sugoi_translation/assets/32747767/72d5b9bf-865a-4323-ace1-34202f2c95f6)
 
-
 </details>
 
 
+Then with sugoi translation toolkit click on button on bottom list named sugoi file translation
+
+<details>
+  <summary>Image</summary>
+
+![Capture](https://github.com/jamesbond448/mtool_jap_sugoi_translation/assets/32747767/9651720a-f4e7-463b-9dfe-0b96c68b349b)
+
+</details>
+
+Then drag the file in extract folder named extracted (number).txt into the box of file translation
+
+<details>
+  <summary>Image</summary>
+
+![Capture](https://github.com/jamesbond448/mtool_jap_sugoi_translation/assets/32747767/3637d930-a929-4356-8204-7156d205b12c)
+
+</details>
+
+Once done you now have a copy of those file in exract named extracted(number)_output.txt
 
 
+Then go to http://localhost/json_line/ 
+which is the project and click on Convert.php
 
+This will give you translationDone.json
 
-
-
-
+You now have a translation for mtool, just load this new translation file.
 
