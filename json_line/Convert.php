@@ -6,7 +6,7 @@ $data = json_decode($json);
 $directory = scandir("extract");
 $translation = "";
 foreach($directory as $file){
-	if(str_contains("extract/" . $file, "_output") && is_file("extract/" . $file)) $translation .= substr_replace(file_get_contents("extract/" . $file) ,"",-2);//remove last character(the empty line)
+	if(str_contains("extract/" . $file, "_output") && is_file("extract/" . $file)) $translation .= file_get_contents("extract/" . $file);//remove last character(the empty line)
 }
 	
 //$translation = file_get_contents("extract/extracted_output.txt");
