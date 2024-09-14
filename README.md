@@ -14,7 +14,7 @@ The setup is done
 
 Now to translate use mtool, go to translate tab and click on export the original text which give you a ManualTransFile.json
 
-Then but it in your php project folder 
+Then put it in your php project folder 
 <details>
   <summary>Image</summary>
   
