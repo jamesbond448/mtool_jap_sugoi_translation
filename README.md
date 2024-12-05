@@ -70,4 +70,6 @@ This will give you translationDone.json
 
 You now have a translation for mtool, just load this new translation file.
 
+You change option in the setting.json file.
+
 IMPORTANT, if you want to translate another manualtransfile.json remember to delete all files in the extract folder
