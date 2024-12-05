@@ -1,5 +1,19 @@
 <?php
 
+if (!file_exists('setting.json')) { //If setting file doesn't exist, will create it here
+	$setting["number_line"] = 5000;
+	$setting["number_line_description"] = "By default number_line is at 5000, if you want a smaller amount of file simply put a higher number or the reverse for more file";
+	$setting["number_padding"] = 4;
+	$setting["number_padding_description"] = "By default number_padding is at 4, if you have more than 9999 files extracted you need to put a higher padding number";
+	file_put_contents("setting.json", json_encode($setting, JSON_PRETTY_PRINT)); //make pretty so user can easily read it
+	echo "Created setting file";
+}
+$setting = file_get_contents("setting.json");
+$setting = json_decode($setting);
+
+$PADDING_NUMBER = '%0' . $setting->number_padding . 'd';
+$NUMBER_OF_LINE = $setting->number_line;
+
 $json = file_get_contents("ManualTransFile.json");
 $data = json_decode($json);
 
@@ -8,18 +22,18 @@ $indexFile = 1;
 if (!file_exists('extract')) {
 	mkdir('extract', 0777, true);
 }
-$file = fopen('extract/extracted' . sprintf('%02d', $indexFile) . '.txt', 'w');
+$file = fopen('extract/extracted' . sprintf($PADDING_NUMBER, $indexFile) . '.txt', 'w');
 foreach ($data as $key => $value) {
-	if ($currentLine >= 5000) {
+	if ($currentLine >= $NUMBER_OF_LINE) {
 		$currentLine = 0;
 		fclose($file);
 		//Remove white space sugpi translation give weird result when translating white space
-		$corrected = file_get_contents('extract/extracted' . sprintf('%02d', $indexFile) . '.txt');
+		$corrected = file_get_contents('extract/extracted' . sprintf($PADDING_NUMBER, $indexFile) . '.txt');
 		$corrected = rtrim($corrected);
-		file_put_contents('extract/extracted' . sprintf('%02d', $indexFile) . '.txt', $corrected);
-		
+		file_put_contents('extract/extracted' . sprintf($PADDING_NUMBER, $indexFile) . '.txt', $corrected);
+
 		$indexFile++;
-		$file = fopen('extract/extracted' . sprintf('%02d', $indexFile) . '.txt', 'w');
+		$file = fopen('extract/extracted' . sprintf($PADDING_NUMBER, $indexFile) . '.txt', 'w');
 	}
 	$matches = "";
 	$value = str_replace("　", "  ", $value);
@@ -46,11 +60,21 @@ foreach ($data as $key => $value) {
 	}
 }
 fclose($file);
-
 //Remove white space sugpi translation give weird result when translating white space
-$corrected = file_get_contents('extract/extracted' . sprintf('%02d', $indexFile) . '.txt');
+$corrected = file_get_contents('extract/extracted' . sprintf($PADDING_NUMBER, $indexFile) . '.txt');
 $corrected = rtrim($corrected);
-file_put_contents('extract/extracted' . sprintf('%02d', $indexFile) . '.txt', $corrected);
+file_put_contents('extract/extracted' . sprintf($PADDING_NUMBER, $indexFile) . '.txt', $corrected);
+?>
+<html>
 
+<body>
+	<?php
+	echo "<p>Current settings:</p>";
+	echo "<p>Number of lines extracted: " . $NUMBER_OF_LINE . "</p>";
+	echo "<p>Number of padding extracted: " . $setting->number_padding . "</p>";
+	echo "<p>Extraction of process Done</p>";
+	echo "<p>Resulted in a number of files: " . $indexFile . " extracted</p>";
+	?>
+</body>
 
-echo "Done";
+</html>
