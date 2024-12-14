@@ -31,7 +31,7 @@ Now active XAMPP apache
 
 </details>
 
-Then go to http://localhost/json_line/ 
+Then go to http://localhost/json_line/  in your browser example firefox
 which is the project and click on Extract.php
 
 <details>
