@@ -73,3 +73,21 @@ You now have a translation for mtool, just load this new translation file.
 You change option in the setting.json file.
 
 IMPORTANT, if you want to translate another manualtransfile.json remember to delete all files in the extract folder
+
+
+NEW OPTION AI, instead of sugoi download an LLM (Experimental)
+
+Your entirely at the mercy of how well your LLM behaves.
+aya-expanse-8b is heavily restrictive and will not translate lewd content
+aya-23-8b is less restrictive but at anypoint can basically ignore your system prompt and add its own dialog
+vntl-llama3-8b seems to be behaving well enough for now, but is still prone to randomly dividing lines or mismatching the current line.
+
+If it fails to translate correctly you can kind of bootstrap context by adding translations to the system prompt. Because of the high rate of failure i would recommend having smaller files sizes so it easier to continue close to where you left off. I would also run it with xdebug to workout any kinks missed.
+
+How to use:
+Theoretically you can just click Translate.php while on localhost/json_line
+In setting
+Set model to what you download
+Edit GPTPrompt.txt with rules and context
+Set contextLength within your token limit a context of 20 lines use about 1000 tokens
+file_skip_amount is there incase the script fails and you have successful files of translations you don't want to erase when you rerun the script
