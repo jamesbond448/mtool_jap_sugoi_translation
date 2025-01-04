@@ -6,6 +6,7 @@ $setting = json_decode($setting);
 $contextArray = [];
 $contextLength = $setting->context_length;
 $fileSkipAmount = $setting->file_skip_amount;
+$filePaddingNumber = $setting->number_padding;
 
 // Function to process each line through a GPT endpoint
 function processLineWithGPT($line, $context)
@@ -74,8 +75,8 @@ $dir = 'extract/';
 // Open directory
 if ($handle = opendir($dir)) {
     while (false !== ($file = readdir($handle))) {
-        // Check if file matches the pattern 'extracted\d{4}.txt'
-        if (preg_match('/^extracted(\d{4})\.txt$/', $file, $matches)) {
+        // Check if file matches the pattern 'extracted\d{n}.txt' where n is the padding number from the user setting
+        if (preg_match('/^extracted(\d{' . $filePaddingNumber . '})\.txt$/', $file, $matches)) {
             $padding = $matches[1];
             if ($padding <= $fileSkipAmount) {
                 continue;
