@@ -1,5 +1,5 @@
 {
-    "number_line": 500,
+    "number_line": 5000,
     "number_line_description": "By default number_line is at 5000, if you want a smaller amount of file simply put a higher number or the reverse for more file",
     "number_padding": 4,
     "number_padding_description": "By default number_padding is at 4, if you have more than 9999 files extracted you need to put a higher padding number",
