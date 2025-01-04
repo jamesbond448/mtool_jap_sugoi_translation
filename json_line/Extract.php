@@ -5,14 +5,6 @@ if (!file_exists('setting.json')) { //If setting file doesn't exist, will create
 	$setting["number_line_description"] = "By default number_line is at 5000, if you want a smaller amount of file simply put a higher number or the reverse for more file";
 	$setting["number_padding"] = 4;
 	$setting["number_padding_description"] = "By default number_padding is at 4, if you have more than 9999 files extracted you need to put a higher padding number";
-	$setting["context_length"] = 20;
-	$setting["context_length_description"] = "By default context_length is at 20, number previous lines translated to keep for context calculate tokens via how many words ie. system prompt + 20 context lines = 1100 tokens";
-	$setting["file_skip_amount"] = 0;
-	$setting["file_skip_amount_description"] = "By default file_skip_amount is at 0, incase the script fails set this to amount of files you want to skip";
-	$setting["url"] = "http://localhost:1234/v1/chat/completions";
-	$setting["url_description"] = "By default url is http://localhost:1234/v1/chat/completions, the url endpoint of the LLM you choose";
-	$setting["model"] = "vntl-llama3-8b";
-	$setting["model_description"] = "By default model is vntl-llama3-8b, set this to the LLM model doing the translations";
 	file_put_contents("setting.json", json_encode($setting, JSON_PRETTY_PRINT)); //make pretty so user can easily read it
 	echo "Created setting file";
 }

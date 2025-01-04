@@ -1,14 +1,6 @@
 {
-    "number_line": 500,
+    "number_line": 5000,
     "number_line_description": "By default number_line is at 5000, if you want a smaller amount of file simply put a higher number or the reverse for more file",
     "number_padding": 4,
-    "number_padding_description": "By default number_padding is at 4, if you have more than 9999 files extracted you need to put a higher padding number",
-    "context_length": 20,
-    "context_length_description": "By default context_length is at 20, number previous lines translated to keep for context calculate tokens via how many words ie. system prompt + 20 context lines = 1100 tokens",
-    "file_skip_amount": 0,
-    "file_skip_amount_description": "By default file_skip_amount is at 0, incase the script fails set this to amount of files you want to skip",
-    "url": "http://localhost:1234/v1/chat/completions",
-    "url_description": "By default url is http://localhost:1234/v1/chat/completions, the url endpoint of the LLM you choose",
-    "model": "vntl-llama3-8b",
-    "model_description": "By default model is vntl-llama3-8b, set this to the LLM model doing the translations"
+    "number_padding_description": "By default number_padding is at 4, if you have more than 9999 files extracted you need to put a higher padding number"
 }
