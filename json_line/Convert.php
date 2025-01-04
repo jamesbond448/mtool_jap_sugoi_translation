@@ -58,7 +58,7 @@ foreach ($data as $key => $value) {
                 $data->$key = $newLine;
             }
         } else {
-            $data->$key = $translation[$i];
+            $data->$key = mb_convert_encoding($translation[$i], "UTF-8", mb_detect_encoding($translation[$i]));
             $i++;
         }
     }
