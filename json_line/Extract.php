@@ -5,6 +5,10 @@ if (!file_exists('setting.json')) { //If setting file doesn't exist, will create
 	$setting["number_line_description"] = "By default number_line is at 5000, if you want a smaller amount of file simply put a higher number or the reverse for more file";
 	$setting["number_padding"] = 4;
 	$setting["number_padding_description"] = "By default number_padding is at 4, if you have more than 9999 files extracted you need to put a higher padding number";
+	$setting["format_number"] = 50;
+	$setting["format_number_description"] = "Default 50, this is the number of character, allow in a maximum line before a new line";
+	$setting["format_word_cut"] = false;
+	$setting["format_word_description"] = "Default false, if set to false, will never cut word that are longer than the format number";
 	$setting["context_length"] = 20;
 	$setting["context_length_description"] = "By default context_length is at 20, number previous lines translated to keep for context calculate tokens via how many words ie. system prompt + 20 context lines = 1100 tokens";
 	$setting["file_skip_amount"] = 0;
