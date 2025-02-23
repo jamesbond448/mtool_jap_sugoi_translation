@@ -74,6 +74,10 @@ You change option in the setting.json file.
 
 IMPORTANT, if you want to translate another manualtransfile.json remember to delete all files in the extract folder
 
+Added Wordwrap, you need to put translationDone.json at the same it is usually created and launch wordwrap, if you want the number of character on one line, simply change it in the setting
+
+That will create translationDoneFormat.json for you.
+
 
 NEW OPTION AI, instead of sugoi download an LLM (Experimental)
 
