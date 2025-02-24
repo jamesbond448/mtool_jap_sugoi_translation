@@ -1,10 +1,12 @@
 <?php
-
+ini_set('memory_limit', '500M');
 if (!file_exists('setting.json')) { //If setting file doesn't exist, will create it here
 	$setting["number_line"] = 5000;
 	$setting["number_line_description"] = "By default number_line is at 5000, if you want a smaller amount of file simply put a higher number or the reverse for more file";
 	$setting["number_padding"] = 4;
 	$setting["number_padding_description"] = "By default number_padding is at 4, if you have more than 9999 files extracted you need to put a higher padding number";
+	$setting["llm_extract"] = false;
+	$setting["llm_extract_description"] = "Default false, make extracting llm normal, it mean line are as they are and the llm should translate the line while keeping their structure";
 	$setting["format_number"] = 50;
 	$setting["format_number_description"] = "Default 50, this is the number of character, allow in a maximum line before a new line";
 	$setting["format_word_cut"] = false;
@@ -25,6 +27,7 @@ $setting = json_decode($setting);
 
 $PADDING_NUMBER = '%0' . $setting->number_padding . 'd';
 $NUMBER_OF_LINE = $setting->number_line;
+$LLM_EXTRACT = $setting->llm_extract;
 
 $json = file_get_contents("ManualTransFile.json");
 $data = json_decode($json);
@@ -51,6 +54,12 @@ foreach ($data as $key => $value) {
 	$value = str_replace("　", "  ", $value);
 	preg_match('/[\x{3000}-\x{303F}]|[\x{3040}-\x{309F}]|[\x{30A0}-\x{30FF}]|[\x{FF00}-\x{FFEF}]|[\x{4E00}-\x{9FAF}]|[\x{2605}-\x{2606}]|[\x{2190}-\x{2195}]|\x{203B}/u', $value, $matches, PREG_UNMATCHED_AS_NULL); //We only take japanese character if there none, no need to translate
 	if (!empty($matches)) {
+		if($LLM_EXTRACT){//Will extract one line exactly as one line ignore formating
+			$temp = trim(preg_replace('/\s\s+/', ' ', str_replace("\n", " \\n ", $value)));
+			fwrite($file, $temp . PHP_EOL);
+			$currentLine++;
+			continue;
+		}
 		$temp = trim(preg_replace('/\s\s+/', ' ', str_replace("\n", "|||", $value))); //Dialog box has multiple line but we want to seperate them in order to translate properly
 		if (str_contains($temp, "|||")) {
 			$temp = explode("|||", $temp);

@@ -1,21 +1,21 @@
 <?php
-
+ini_set('memory_limit', '500M');
 $json = file_get_contents("translationDone.json");
 $data = json_decode($json);
 
 $setting = file_get_contents("setting.json");
 $setting = json_decode($setting);
 
-$format_number = $setting->format_number;
-$format_word = $setting->format_word_cut;
+$FORMAT_NUMBER = $setting->format_number;
+$FORMAT_WORD_CUT = $setting->format_word_cut;
 
 foreach ($data as $key => $value) {
     $temp = trim(preg_replace('/\s\s+/', ' ', str_replace("\n", "", $value)));
-    if (strlen($value) >= $format_number) {
-        if (!$format_word) {
-            $newLine = wordwrap($temp, $format_number);
+    if (strlen($value) >= $FORMAT_NUMBER) {
+        if (!$FORMAT_WORD_CUT) {
+            $newLine = wordwrap($temp, $FORMAT_NUMBER);
         } else {
-            $newLine = wordwrap($temp, $format_number, "\n",true);
+            $newLine = wordwrap($temp, $FORMAT_NUMBER, "\n",true);
         }
         $data->$key = mb_convert_encoding($newLine, "UTF-8", mb_detect_encoding($newLine));;
     }

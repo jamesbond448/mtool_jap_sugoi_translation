@@ -1,5 +1,5 @@
 <?php
-
+ini_set('memory_limit', '500M');
 $json = file_get_contents("ManualTransFile.json");
 $data = json_decode($json);
 
@@ -8,6 +8,11 @@ $translation = "";
 foreach ($directory as $file) {
     if (str_contains("extract/" . $file, "_output") && is_file("extract/" . $file)) $translation .= file_get_contents("extract/" . $file);
 }
+
+$setting = file_get_contents("setting.json");
+$setting = json_decode($setting);
+
+$LLM_EXTRACT = $setting->llm_extract;
 
 //$translation = file_get_contents("extract/extracted_output.txt");
 $translation = preg_split('/\r\n|\r|\n/', $translation);
@@ -18,7 +23,12 @@ foreach ($data as $key => $value) {
     $value = str_replace("　", "  ", $value);
     preg_match('/[\x{3000}-\x{303F}]|[\x{3040}-\x{309F}]|[\x{30A0}-\x{30FF}]|[\x{FF00}-\x{FFEF}]|[\x{4E00}-\x{9FAF}]|[\x{2605}-\x{2606}]|[\x{2190}-\x{2195}]|\x{203B}/u', $value, $matches, PREG_UNMATCHED_AS_NULL);
     if (!empty($matches)) {
-        // ||| === <unk><unk><unk>"
+        if($LLM_EXTRACT){//Will extract one line exactly as one line ignore formating
+            $temp = str_replace("\\n", "\n", $translation[$i]);
+            $data->$key = mb_convert_encoding($temp, "UTF-8", mb_detect_encoding($translation[$i]));
+            $i++;
+            continue;
+        }
         $temp = trim(preg_replace('/\s\s+/', ' ', str_replace("\n", "|||", $value)));
         if (str_contains($temp, "|||")) {
             $temp = explode("|||", $temp);

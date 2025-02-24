@@ -1,5 +1,5 @@
 <?php
-
+ini_set('memory_limit', '500M');
 $setting = file_get_contents("setting.json");
 $setting = json_decode($setting);
 

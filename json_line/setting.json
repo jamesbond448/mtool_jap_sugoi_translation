@@ -3,6 +3,8 @@
     "number_line_description": "By default number_line is at 5000, if you want a smaller amount of file simply put a higher number or the reverse for more file",
     "number_padding": 4,
     "number_padding_description": "By default number_padding is at 4, if you have more than 9999 files extracted you need to put a higher padding number",
+    "llm_extract": false,
+    "llm_extract_description": "Default false, make extracting llm normal, it mean line are as they are and the llm should translate the line while keeping their structure",
     "format_number": 50,
     "format_number_description": "Default 50, this is the number of character, allow in a maximum line before a new line",
     "format_word_cut": false,
