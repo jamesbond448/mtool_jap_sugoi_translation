@@ -31,6 +31,8 @@ Now active XAMPP apache
 
 </details>
 
+If you want to use llm (Ai translation, go in setting and edit the llm_extract line from false to true, if you want to use sugoi put it back to false.
+
 Then go to http://localhost/json_line/  in your browser example firefox
 which is the project and click on Extract.php
 
