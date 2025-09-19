@@ -1,5 +1,6 @@
 <?php
 ini_set('memory_limit', '500M');
+set_time_limit(5000); //83 minute, can't imagine longer than that
 if (!file_exists('setting.json')) { //If setting file doesn't exist, will create it here
 	$setting["number_line"] = 5000;
 	$setting["number_line_description"] = "By default number_line is at 5000, if you want a smaller amount of file simply put a higher number or the reverse for more file";
@@ -31,6 +32,62 @@ $LLM_EXTRACT = $setting->llm_extract;
 
 $json = file_get_contents("ManualTransFile.json");
 $data = json_decode($json);
+if ($data == null) { //Json decode sometime will give an error, simple solution, skip the problematic line
+	$errorLine = [];
+	$newFile = "";
+	$newFileAttempt = "";
+	$line_number = 1;
+	$max_numberline = 0;
+	$handle = fopen("ManualTransFile.json", "r");
+	if ($handle) {
+		while (($line = fgets($handle)) !== false) {
+			$line_number++;
+		}
+		$max_numberline = $line_number - 1;
+		fclose($handle);
+	}
+	$line_number = 1;
+	$handle = fopen("ManualTransFile.json", "r");
+	if ($handle) {
+		while (($line = fgets($handle)) !== false) {
+			if ($line_number == 1 || $line_number == $max_numberline) {
+				$newFile .= $line . PHP_EOL;
+			} else if ($line_number == $max_numberline - 1) {
+				//Last line doesn't have a virgule
+				$newFileAttempt = "{" . PHP_EOL;
+				$newFileAttempt .= $line . PHP_EOL . "}";
+				$data = json_decode($newFileAttempt);
+				if ($data == null) {
+					array_push($errorLine, $line_number);
+				} else {
+					$newFile .= $line . PHP_EOL;
+				}
+			} else {
+				$newFileAttempt = "{" . PHP_EOL;
+				$newFileAttempt .= substr($line, 0, -2) . PHP_EOL . "}";
+				$data = json_decode($newFileAttempt);
+				if ($data == null) {
+					array_push($errorLine, $line_number);
+				} else {
+					$newFile .= $line . PHP_EOL;
+				}
+			}
+			$line_number++;
+		}
+		fclose($handle);
+		if (substr_count(substr($newFile, -4), ",") >= 1) { //This is if the problematic line would be the last one, we would have a virgule from the previous valid line
+			//Found to end with virgule
+			$newFile = substr($newFile, 0, -4) . PHP_EOL;
+		}
+		$data = json_decode($newFile);
+		//Error Json line to skip
+		$jsonString = json_encode($errorLine, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+		// Write in the file
+		$fp = fopen("LastErrorJson.json", 'w');
+		fwrite($fp, $jsonString);
+		fclose($fp);
+	}
+}
 
 $currentLine = 0;
 $indexFile = 1;
@@ -38,6 +95,7 @@ if (!file_exists('extract')) {
 	mkdir('extract', 0777, true);
 }
 $file = fopen('extract/extracted' . sprintf($PADDING_NUMBER, $indexFile) . '.txt', 'w');
+
 foreach ($data as $key => $value) {
 	if ($currentLine >= $NUMBER_OF_LINE) {
 		$currentLine = 0;
@@ -54,7 +112,7 @@ foreach ($data as $key => $value) {
 	$value = str_replace("　", "  ", $value);
 	preg_match('/[\x{3000}-\x{303F}]|[\x{3040}-\x{309F}]|[\x{30A0}-\x{30FF}]|[\x{FF00}-\x{FFEF}]|[\x{4E00}-\x{9FAF}]|[\x{2605}-\x{2606}]|[\x{2190}-\x{2195}]|\x{203B}/u', $value, $matches, PREG_UNMATCHED_AS_NULL); //We only take japanese character if there none, no need to translate
 	if (!empty($matches)) {
-		if($LLM_EXTRACT){//Will extract one line exactly as one line ignore formating
+		if ($LLM_EXTRACT) { //Will extract one line exactly as one line ignore formating
 			$temp = trim(preg_replace('/\s\s+/', ' ', str_replace("\n", " \\n ", $value)));
 			fwrite($file, $temp . PHP_EOL);
 			$currentLine++;
